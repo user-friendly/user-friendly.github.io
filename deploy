@@ -59,7 +59,7 @@ if isConfirmed $confirm; then
 	git tag "r$REV_NEXT"
 	
 	echo "Diff stats:"
-	git diff --stat HEAD..HEAD~1
+	git diff --stat HEAD~1..HEAD
 	echo "Revision tag: "
 	git tag -l "r$REV_NEXT"
 	
