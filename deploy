@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+# FIXME Move this deployment script out of the artifact repo!
+
 # Simple deployment script for GitHub pages.
 
 isConfirmed ( ) {
@@ -46,7 +48,7 @@ echo "Next revision is: $REV_NEXT"
 
 echo "$REV_NEXT" > .build.revision
 
-git add .build.revision index.html assets
+git add .build.revision $FILES
 git status -s
 
 read -p "Commit changes? (y/n): " confirm
