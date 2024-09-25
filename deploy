@@ -2,25 +2,41 @@
 
 # Simple deployment script for GitHub pages.
 
+isConfirmed ( ) {
+	[ "$1" = y ] || [ "$1" = Y ] || [ "$1" = ye ] || \
+	[ "$1" = yes ] || [ "$1" = YE ] || [ "$1" = YES ]
+}
+
 BUILD_DIR="$1"
 TARGET_DIR="$2"
 
-if [[ "$BUILD_DIR" = "" ]] then
+if [ "$BUILD_DIR" = "" ]; then
 	echo "error: build directory not specified"
 	exit 1
 fi
 
-if [[ "$TARGET_DIR" = "" ]] then
+if [ "$TARGET_DIR" = "" ]; then
 	TARGET_DIR=`pwd`
 	echo "notice: target directory set to current dir"
 fi
 
 echo -e "Deploying build\n\tfrom:\t$BUILD_DIR\n\tto:\t$TARGET_DIR"
 
-rm -r $TARGET_DIR/index.html $TARGET_DIR/assets
+echo "Build directory:      $BUILD_DIR"
+echo "Deployment directory: $TARGET_DIR"
 
-cp -r $BUILD_DIR/index.html "$TARGET_DIR/index.html"
-cp -r $BUILD_DIR/assets "$TARGET_DIR/assets"
+# Files to deploy.
+FILES="index.html favicon.ico assets"
+
+for file in $FILES; do
+	echo "delete $TARGET_DIR/$file"
+	rm -r $TARGET_DIR/$file
+done
+
+for file in $FILES; do
+	echo "copy $BUILD_DIR/$file to $TARGET_DIR/$file"
+	cp -r $BUILD_DIR/$file $TARGET_DIR/$file
+done
 
 REV=$(cat $TARGET_DIR/.build.revision)
 REV_NEXT=$(expr $REV + 1)
@@ -33,17 +49,29 @@ echo "$REV_NEXT" > .build.revision
 git add .build.revision index.html assets
 git status -s
 
-read -p "Commit changes? (y/n): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-
-git commit -m "release r$REV_NEXT"
-git log -n 1
-git tag "r$REV_NEXT"
-
-echo "Diff stats:"
-git diff --stat HEAD..HEAD~1
-echo "Revision tag: "
-git tag -l "r$REV_NEXT"
-
-read -p "Push to production? (y/n): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-
-git push origin && git push origin tag "r$REV_NEXT"
+read -p "Commit changes? (y/n): " confirm
+if isConfirmed $confirm; then
+	
+	git commit -m "release r$REV_NEXT"
+	git log -n 1
+	git tag "r$REV_NEXT"
+	
+	echo "Diff stats:"
+	git diff --stat HEAD..HEAD~1
+	echo "Revision tag: "
+	git tag -l "r$REV_NEXT"
+	
+	read -p "Push to production? (y/n): " confirm
+	if isConfirmed $confirm; then
+		git push origin && git push origin tag "r$REV_NEXT"
+	else
+		echo "Push to production canceled!"
+		exit 1
+	fi
+else
+	echo "Commit canceled!"
+	git reset
+	git checkout .build.revision
+	echo "Rollback build revision to: $(cat .build.revision)" 
+	exit 1
+fi
