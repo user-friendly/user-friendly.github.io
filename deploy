@@ -65,8 +65,8 @@ if isConfirmed $confirm; then
 	
 	read -p "Publish artifact? (y/n): " confirm
 	if isConfirmed $confirm; then
-		git push origin && echo "Artifact published." || echo "error: failed to publish artifact" && exit 1
-		git push origin tag "r$REV_NEXT" && echo "Tag published." || echo "error: failed to publish tag" && exit 1
+		git push origin && echo "Artifact published." || echo "error: failed to publish artifact"
+		git push origin tag "r$REV_NEXT" && echo "Tag published." || echo "error: failed to publish tag"
 	else
 		echo "Push to production canceled!"
 		exit 1
