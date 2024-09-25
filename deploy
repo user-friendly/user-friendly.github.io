@@ -22,10 +22,10 @@ if [ "$TARGET_DIR" = "" ]; then
 	echo "notice: target directory set to current dir"
 fi
 
-echo -e "Deploying build\n\tfrom:\t$BUILD_DIR\n\tto:\t$TARGET_DIR"
+echo "Publish React Formula to user-friendly.github.io artifact repository."
 
-echo "Build directory:      $BUILD_DIR"
-echo "Deployment directory: $TARGET_DIR"
+echo "Build directory:  $BUILD_DIR"
+echo "Target directory: $TARGET_DIR"
 
 # Files to deploy.
 FILES="index.html favicon.ico assets"
@@ -63,9 +63,10 @@ if isConfirmed $confirm; then
 	echo "Revision tag: "
 	git tag -l "r$REV_NEXT"
 	
-	read -p "Push to production? (y/n): " confirm
+	read -p "Publish artifact? (y/n): " confirm
 	if isConfirmed $confirm; then
-		git push origin && git push origin tag "r$REV_NEXT"
+		git push origin && echo "Artifact published." || echo "error: failed to publish artifact" && exit 1
+		git push origin tag "r$REV_NEXT" && echo "Tag published." || echo "error: failed to publish tag" && exit 1
 	else
 		echo "Push to production canceled!"
 		exit 1
