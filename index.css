@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+body {
+	--google-font-color-notocoloremoji: none;
+}
+
+.font-noto {
+  font-family: Noto Color Emoji, sans-serif;
+  font-optical-sizing: auto;
+}
