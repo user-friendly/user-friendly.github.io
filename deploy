@@ -28,7 +28,7 @@ echo "Build directory:  $BUILD_DIR"
 echo "Target directory: $TARGET_DIR"
 
 # Files to deploy.
-FILES="index.html favicon.ico assets"
+FILES="index.html favicon.ico nws-logo.png assets"
 
 for file in $FILES; do
 	echo "delete $TARGET_DIR/$file"
