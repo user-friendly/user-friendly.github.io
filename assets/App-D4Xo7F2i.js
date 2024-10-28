@@ -1,0 +1,1 @@
+import{j as e,L as s}from"./index-DWiJCoAD.js";import"./services-C3bE939n.js";const n=()=>e.jsxs("div",{className:"min-h-screen flex flex-col items-center",children:[e.jsx(s,{className:"text-sky-400 hover:underline",to:"/",children:"Back To Main App"}),e.jsx("h1",{className:"my-4 text-5xl",children:"Capstone Project"})]});export{n as default};
