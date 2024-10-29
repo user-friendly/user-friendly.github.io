@@ -1,4 +1,4 @@
-import{r as c,j as e,L as l}from"./index-DWiJCoAD.js";import{e as n}from"./services-C3bE939n.js";const i=`
+import{r as c,j as e,L as l}from"./index-BILtmM1S.js";import{e as n}from"./services-C3bE939n.js";const i=`
 	text-xl font-medium hover:underline
 	py-6 pl-8 text-violet-300
 	md:mx-4 md:text-inherit md:p-0
