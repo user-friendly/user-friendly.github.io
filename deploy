@@ -28,7 +28,7 @@ echo "Build directory:  $BUILD_DIR"
 echo "Target directory: $TARGET_DIR"
 
 # Files to deploy.
-FILES="index.html 404.html mockServiceWorker.js favicon.ico nws-logo.png assets images"
+FILES="index.html 404.html mockServiceWorker.js index.html.gz 404.html.gz mockServiceWorker.js.gz favicon.ico assets images"
 
 for file in $FILES; do
 	echo "delete $TARGET_DIR/$file"
