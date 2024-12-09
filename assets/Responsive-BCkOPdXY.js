@@ -1,4 +1,4 @@
-import{j as e,A as i}from"./index-BUvT_U8k.js";import{C as n}from"./Collapsable-DThGoySP.js";import"./services-CQQVyGs2.js";const t=()=>e.jsxs("div",{className:`
+import{j as e,A as i}from"./index-C6GO0Avb.js";import{C as n}from"./Collapsable-B1FifyP2.js";import"./services-CQQVyGs2.js";const t=()=>e.jsxs("div",{className:`
 		p-6 flex-1 flex flex-col justify-center items-center
 		text-gray-700
 		
