@@ -1,0 +1,80 @@
+#!/usr/bin/env sh
+
+# FIXME Move this deployment script out of the artifact repo!
+
+# Simple deployment script for GitHub pages.
+
+isConfirmed ( ) {
+	[ "$1" = y ] || [ "$1" = Y ] || [ "$1" = ye ] || \
+	[ "$1" = yes ] || [ "$1" = YE ] || [ "$1" = YES ]
+}
+
+BUILD_DIR="$1"
+TARGET_DIR="$2"
+
+if [ "$BUILD_DIR" = "" ]; then
+	echo "error: build directory not specified"
+	exit 1
+fi
+
+if [ "$TARGET_DIR" = "" ]; then
+	TARGET_DIR=`pwd`
+	echo "notice: target directory set to current dir"
+fi
+
+echo "Publish React Formula to user-friendly.github.io artifact repository."
+
+echo "Build directory:  $BUILD_DIR"
+echo "Target directory: $TARGET_DIR"
+
+# Files to deploy.
+FILES="index.html 404.html mockServiceWorker.js index.html.gz 404.html.gz mockServiceWorker.js.gz favicon.ico assets images"
+
+for file in $FILES; do
+	echo "delete $TARGET_DIR/$file"
+	rm -r $TARGET_DIR/$file
+done
+
+for file in $FILES; do
+	echo "copy $BUILD_DIR/$file to $TARGET_DIR/$file"
+	cp -r $BUILD_DIR/$file $TARGET_DIR/$file
+done
+
+REV=$(cat $TARGET_DIR/.build.revision)
+REV_NEXT=$(expr $REV + 1)
+
+echo "Current revision is: $REV"
+echo "Next revision is: $REV_NEXT"
+
+echo "$REV_NEXT" > .build.revision
+
+git add .build.revision $FILES
+git status -s
+
+read -p "Commit changes? (y/n): " confirm
+if isConfirmed $confirm; then
+	
+	git commit -m "release r$REV_NEXT"
+	git log -n 1
+	git tag "r$REV_NEXT"
+	
+	echo "Diff stats:"
+	git diff --stat HEAD~1..HEAD
+	echo "Revision tag: "
+	git tag -l "r$REV_NEXT"
+	
+	read -p "Publish artifact? (y/n): " confirm
+	if isConfirmed $confirm; then
+		git push origin && echo "Artifact published." || echo "error: failed to publish artifact"
+		git push origin tag "r$REV_NEXT" && echo "Tag published." || echo "error: failed to publish tag"
+	else
+		echo "Push to production canceled!"
+		exit 1
+	fi
+else
+	echo "Commit canceled!"
+	git reset
+	git checkout .build.revision
+	echo "Rollback build revision to: $(cat .build.revision)" 
+	exit 1
+fi
