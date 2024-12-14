@@ -1,1 +1,0 @@
-import{r as l,j as s}from"./index-BnCVIr25.js";const x=({children:r,collapse:t,title:o})=>{const[e,n]=l.useState(!t);return s.jsxs(s.Fragment,{children:[s.jsxs("h2",{className:"self-center my-2 text-2xl cursor-pointer bg-blue-300 rounded-lg px-2 py-1",onClick:a=>n(!e),children:[o," ",s.jsx("span",{children:e?"⏬":"⏫"})]}),e&&r]})};export{x as C};
