@@ -1,4 +1,4 @@
-import{r as c,j as e,A as o,L as i,B as r}from"./index-CaT3Irnv.js";import{j as n}from"./services-PJNdIvHe.js";const a=`
+import{r as c,j as e,A as o,L as i,B as r}from"./index-x0SVEpoI.js";import{j as n}from"./services-PJNdIvHe.js";const a=`
 	text-xl font-medium hover:underline
 	py-6 pl-8 text-violet-300
 	md:mx-4 md:text-inherit md:p-0
